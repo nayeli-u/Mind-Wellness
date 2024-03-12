@@ -3,14 +3,29 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/theme";
 import { TextInput } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import Checkbox from "expo-checkbox";
 import { useNavigation } from "@react-navigation/native";
+import { app } from "../firebaseConfig";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const [isPasswordShown, setIsPasswordShown] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+    const auth = getAuth(app);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("SIGN UP", user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("ERROR", error);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -48,7 +63,8 @@ const SignUpScreen = () => {
             <TextInput
               placeholder="Enter your email address"
               placeholderTextColor={COLORS.black}
-              keyboardType="email-address"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
               style={{ width: "100%" }}
             />
           </View>
@@ -73,23 +89,10 @@ const SignUpScreen = () => {
             <TextInput
               placeholder="Enter your password"
               placeholderTextColor={COLORS.black}
-              secureTextEntry={isPasswordShown}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
               style={{ width: "100%" }}
             />
-
-            <TouchableOpacity
-              onPress={() => setIsPasswordShown(!isPasswordShown)}
-              style={{
-                position: "absolute",
-                right: 12,
-              }}
-            >
-              {isPasswordShown == true ? (
-                <Ionicons name="eye-off" size={24} color={COLORS.black} />
-              ) : (
-                <Ionicons name="eye" size={24} color={COLORS.black} />
-              )}
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -98,20 +101,11 @@ const SignUpScreen = () => {
             flexDirection: "row",
             marginVertical: 6,
           }}
-        >
-          <Checkbox
-            style={{ marginRight: 8 }}
-            value={isChecked}
-            onValueChange={setIsChecked}
-            color={isChecked ? COLORS.black : undefined}
-          />
-
-          <Text>I agree to the terms and conditions</Text>
-        </View>
+        ></View>
         <View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("HomeScreen")}
+            onPress={handleSignUp /* () => navigation.navigate("HomeScreen") */}
           >
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
