@@ -121,6 +121,12 @@ const SignUpScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("landingpageScreen")}
+        style={styles.backButton}
+      >
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -147,6 +153,15 @@ const styles = StyleSheet.create({
     color: "#4285f4",
     fontSize: 12,
     fontWeight: "bold",
+  },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: "#b783e6",
   },
 });
 
