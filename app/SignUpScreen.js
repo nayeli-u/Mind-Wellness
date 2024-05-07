@@ -4,26 +4,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/theme";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { app } from "../firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from "../firebaseConfig";
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
+  const auth = FIREBASE_AUTH;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignUp = () => {
-    const auth = getAuth(app);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("SIGN UP", user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("ERROR", error);
-      });
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log("SIGN UP", user);
+
+      //Reset input
+      setEmail("");
+      setPassword("");
+
+      //Navigate to HomeScreen
+      navigation.navigate("HomeScreen");
+    } catch (error) {
+      console.log("SIGN UP ERROR", error.code, error.message);
+    }
   };
 
   return (
@@ -35,6 +43,7 @@ const SignUpScreen = () => {
             fontWeight: "bold",
             marginVertical: 12,
             color: COLORS.black,
+            paddingVertical: 10,
           }}
         >
           Create Account
@@ -103,10 +112,7 @@ const SignUpScreen = () => {
           }}
         ></View>
         <View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSignUp /* () => navigation.navigate("HomeScreen") */}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleSignUp}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
@@ -116,17 +122,11 @@ const SignUpScreen = () => {
             <Text style={styles.LogInText}>Already have an account?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={styles.LogInLink}>Log in</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("landingpageScreen")}
-        style={styles.backButton}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -153,15 +153,6 @@ const styles = StyleSheet.create({
     color: "#4285f4",
     fontSize: 12,
     fontWeight: "bold",
-  },
-  backButton: {
-    position: "absolute",
-    top: 20,
-    left: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
   },
 });
 

@@ -29,6 +29,10 @@ const GoalSettingScreen = () => {
       if (savedReminder !== null) {
         setReminder(savedReminder);
       }
+
+      //Reset Goal and Reminder
+      setGoal("");
+      setReminder("");
     } catch (error) {
       console.error("Error loading goal and reminder:", error);
     }
@@ -41,25 +45,12 @@ const GoalSettingScreen = () => {
       if (savedGoals !== null) {
         goals = JSON.parse(savedGoals);
       }
-      goals.push({ goal, reminder });
+      goals.push({ goal, reminder, completed: false }); // Add completed field
       await AsyncStorage.setItem("goals", JSON.stringify(goals));
-      Alert.alert("Success", "Goal and reminder saved successfully.");
+      //Alert.alert("Success", "Goal and reminder saved successfully.");
     } catch (error) {
       console.error("Error saving goal and reminder:", error);
       Alert.alert("Error", "Failed to save goal and reminder.");
-    }
-  };
-
-  const deleteGoalAndReminder = async () => {
-    try {
-      await AsyncStorage.removeItem("goal");
-      await AsyncStorage.removeItem("reminder");
-      setGoal("");
-      setReminder("");
-      Alert.alert("Success", "Goal and reminder deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting goal and reminder:", error);
-      Alert.alert("Error", "Failed to delete goal and reminder.");
     }
   };
 
@@ -82,19 +73,13 @@ const GoalSettingScreen = () => {
         <Text style={styles.buttonText}>Save Goal</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={deleteGoalAndReminder}
-      >
-        <Text style={styles.deleteButtonText}>Delete Goal</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         onPress={() => navigation.navigate("HomeScreen")}
         style={styles.backButton}
       >
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("GoalListScreen")}
+        onPress={() => navigation.navigate("GoalList")}
         style={styles.viewGoalsButton}
       >
         <Text style={styles.viewGoalsButtonText}>View Goals</Text>
@@ -110,6 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
+    paddingTop: 50,
   },
   title: {
     fontSize: 24,
@@ -138,22 +124,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  deleteButton: {
-    backgroundColor: "#ff4444",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  deleteButtonText: {
-    color: "#ffffff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
   backButton: {
     position: "absolute",
     top: 20,
     left: 20,
+    paddingTop: 20,
   },
   backButtonText: {
     fontSize: 16,
@@ -164,6 +139,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 60,
     borderRadius: 8,
+    marginBottom: 10,
     marginTop: "auto", // Pushes the button to the bottom
   },
   viewGoalsButtonText: {

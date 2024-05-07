@@ -5,10 +5,36 @@ import COLORS from "../constants/theme";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FIREBASE_AUTH } from "../firebaseConfig";
+
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const auth = FIREBASE_AUTH;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+
+      //Reset input
+      setEmail("");
+      setPassword("");
+
+      navigation.navigate("HomeScreen");
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -86,21 +112,23 @@ const LoginScreen = () => {
             marginVertical: 6,
           }}
         ></View>
+
         <View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("HomeScreen")}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
+
+        <View style={styles.LogInContainer}>
+          <TouchableOpacity>
+            <Text style={styles.LogInText}>Don't have an account yet?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <Text style={styles.LogInLink}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("landingpageScreen")}
-        style={styles.backButton}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -114,15 +142,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#ffffff",
     fontSize: 18,
-  },
-  backButton: {
-    position: "absolute",
-    top: 20,
-    left: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
   },
 });
 

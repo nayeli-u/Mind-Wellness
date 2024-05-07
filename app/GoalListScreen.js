@@ -1,3 +1,4 @@
+// GoalListScreen.js
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -9,10 +10,12 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const GoalListScreen = () => {
   const navigation = useNavigation();
   const [goals, setGoals] = useState([]);
+  const [selectedGoals, setSelectedGoals] = useState([]);
 
   useEffect(() => {
     loadGoals();
@@ -29,11 +32,33 @@ const GoalListScreen = () => {
     }
   };
 
+  const toggleGoalSelection = (goalId) => {
+    if (selectedGoals.includes(goalId)) {
+      setSelectedGoals(selectedGoals.filter((id) => id !== goalId));
+    } else {
+      setSelectedGoals([...selectedGoals, goalId]);
+    }
+  };
+
   const toggleGoalCompletion = (index) => {
     const updatedGoals = [...goals];
     updatedGoals[index].completed = !updatedGoals[index].completed;
     setGoals(updatedGoals);
     saveGoals(updatedGoals);
+  };
+
+  const deleteSelectedGoals = async () => {
+    try {
+      const updatedGoals = goals.filter(
+        (goal, index) => !selectedGoals.includes(index)
+      );
+      setGoals(updatedGoals);
+      setSelectedGoals([]);
+      await AsyncStorage.setItem("goals", JSON.stringify(updatedGoals));
+    } catch (error) {
+      console.error("Error deleting goals:", error);
+      Alert.alert("Error", "Failed to delete selected goals.");
+    }
   };
 
   const saveGoals = async (updatedGoals) => {
@@ -46,24 +71,24 @@ const GoalListScreen = () => {
   };
 
   const renderGoalItem = ({ item, index }) => {
+    const isSelected = selectedGoals.includes(index);
     return (
       <TouchableOpacity
-        style={styles.goalItem}
-        onPress={() => toggleGoalCompletion(index)}
+        style={[styles.goalItem, isSelected && styles.selectedGoalItem]}
+        onPress={() => toggleGoalSelection(index)}
       >
-        <Text
-          style={[styles.goalText, item.completed && styles.completedGoalText]}
+        <Text style={styles.goalText}>{item.goal}</Text>
+        <Text style={styles.reminderText}>{item.reminder}</Text>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => toggleGoalCompletion(index)}
         >
-          {item.goal}
-        </Text>
-        <Text
-          style={[
-            styles.reminderText,
-            item.completed && styles.completedReminderText,
-          ]}
-        >
-          {item.reminder}
-        </Text>
+          {item.completed ? (
+            <FontAwesome name="check-square" size={24} color="green" />
+          ) : (
+            <FontAwesome name="square-o" size={24} color="black" />
+          )}
+        </TouchableOpacity>
       </TouchableOpacity>
     );
   };
@@ -80,11 +105,19 @@ const GoalListScreen = () => {
       ) : (
         <Text>No goals set yet.</Text>
       )}
+      {selectedGoals.length > 0 && (
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={deleteSelectedGoals}
+        >
+          <FontAwesome name="trash" size={24} color="red" />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
-        onPress={() => navigation.navigate("GoalSettingScreen")}
-        style={styles.backButton}
+        onPress={() => navigation.navigate("GoalSetting")}
+        style={styles.addButton}
       >
-        <Text style={styles.backButtonText}>Back</Text>
+        <Text style={styles.addButtonText}>Add Goal</Text>
       </TouchableOpacity>
     </View>
   );
@@ -105,34 +138,49 @@ const styles = StyleSheet.create({
     color: "#b783e6",
   },
   goalItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: "#f0f0f0",
     padding: 20,
     borderRadius: 10,
     marginBottom: 10,
   },
+  selectedGoalItem: {
+    backgroundColor: "#808080",
+  },
   goalText: {
+    flex: 1,
     fontSize: 16,
     marginBottom: 5,
   },
   reminderText: {
+    flex: 1,
     fontSize: 14,
-    color: "#666666",
+    color: "#666",
   },
-  completedGoalText: {
-    textDecorationLine: "line-through",
+  iconContainer: {
+    marginLeft: 10,
   },
-  completedReminderText: {
-    textDecorationLine: "line-through",
-    color: "#999999",
+  deleteButton: {
+    backgroundColor: "#ff4444",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: "center",
   },
-  backButton: {
-    position: "absolute",
-    top: 20,
-    left: 20,
+  addButton: {
+    backgroundColor: "#b783e6",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: "center",
+    marginTop: "auto",
   },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
+  addButtonText: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

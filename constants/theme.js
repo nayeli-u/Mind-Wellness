@@ -16,6 +16,7 @@ const COLORS = {
   purple: "#b783e6",
   purple_main_hover: "#b49fcc", //darker purple
   grey: "#CCCCCC",
+  lightGray: "#d3d3d3",
   white: "#ffffff",
   black: "#000000",
 };

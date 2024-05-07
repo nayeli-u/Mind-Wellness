@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const landingpageScreen = () => {
+const LandingPageScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -13,7 +13,7 @@ const landingpageScreen = () => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("SignUpScreen")}
+        onPress={() => navigation.navigate("SignUp")}
       >
         <Text style={styles.buttonText}>Begin Your Journey</Text>
       </TouchableOpacity>
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default landingpageScreen;
+export default LandingPageScreen;

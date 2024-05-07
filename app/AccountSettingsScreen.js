@@ -1,14 +1,26 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../navigation/AuthContext";
+import { signOut } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FIREBASE_AUTH } from "../firebaseConfig";
 
 const AccountSettingsScreen = () => {
   const navigation = useNavigation();
+  const user = useAuth();
+  const auth = FIREBASE_AUTH;
 
-  const handleLogout = () => {
-    // Perform logout operation here, such as clearing user data or resetting authentication state
-    // Then navigate back to the login screen or landing page
-    navigation.navigate("LoginScreen");
+  const handleLogout = async () => {
+    try {
+      await signOut(auth, user);
+
+      await AsyncStorage.removeItem("user");
+      console.log("Signed Out");
+      navigation.navigate("LandingPageScreenLoggedOut");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -27,10 +39,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
+    //paddingTop: 40,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 20,
     paddingVertical: 40,
   },

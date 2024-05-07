@@ -21,32 +21,64 @@ const MoodHistoryScreen = () => {
     try {
       const savedMoodHistory = await AsyncStorage.getItem("moodHistory");
       if (savedMoodHistory !== null) {
-        const parsedMoodHistory = JSON.parse(savedMoodHistory).map((entry) => ({
-          mood: entry.mood,
-          date: entry.date ? new Date(entry.date) : null, // Parse date string into Date object or set to null
-        }));
-        setMoodHistory(parsedMoodHistory);
+        setMoodHistory(JSON.parse(savedMoodHistory));
       }
     } catch (error) {
       console.error("Error loading mood history:", error);
     }
   };
 
+  const updateMoodHistory = async (period, mood) => {
+    const updatedHistory = [...moodHistory];
+    const existingEntryIndex = updatedHistory.findIndex(
+      (entry) => entry.period === period
+    );
+    if (existingEntryIndex !== -1) {
+      // Update existing entry
+      updatedHistory[existingEntryIndex] = {
+        period,
+        mood,
+        datetime: new Date(),
+      };
+    } else {
+      // Add new entry
+      updatedHistory.push({ period, mood, datetime: new Date() });
+    }
+
+    // Save updated mood history to AsyncStorage
+    try {
+      await AsyncStorage.setItem("moodHistory", JSON.stringify(updatedHistory));
+      setMoodHistory(updatedHistory);
+      updateMoodHistory(updatedHistory);
+    } catch (error) {
+      console.error("Error saving mood history:", error);
+    }
+  };
+
   const renderMoodItem = ({ item }) => {
-    const { mood, date } = item;
     return (
       <View style={styles.moodItem}>
-        <Text style={styles.moodText}>{mood}</Text>
-        <Text style={styles.dateText}>{formatDate(date)}</Text>
+        {/* Display Period Icon, Date, and Time */}
+        <View style={styles.detailsContainer}>
+          <Text>{getPeriodIcon(item.period)}</Text>
+          <Text>{new Date(item.datetime).toLocaleString()}</Text>
+        </View>
+        <Text style={styles.moodText}>{item.mood}</Text>
       </View>
     );
   };
 
-  const formatDate = (date) => {
-    if (!date || isNaN(date.getTime())) {
-      return "Invalid Date";
+  const getPeriodIcon = (period) => {
+    switch (period) {
+      case "Morning":
+        return "🌅"; // Sunrise
+      case "Afternoon":
+        return "☀️"; // Sun
+      case "Night":
+        return "🌙"; // Moon
+      default:
+        return "";
     }
-    return date.toLocaleDateString(); // Format date using toLocaleDateString
   };
 
   return (
@@ -76,13 +108,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 50,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
+    color: "#b783e6",
   },
   moodList: {
     flexGrow: 1,
@@ -95,20 +129,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f0f0",
   },
   moodText: {
+    flex: 1,
     fontSize: 16,
-  },
-  dateText: {
-    fontSize: 14,
-    color: "#666666",
+    marginBottom: 5,
   },
   backButton: {
     position: "absolute",
     top: 20,
     left: 20,
+    paddingTop: 20,
   },
   backButtonText: {
     fontSize: 16,
     color: "#b783e6",
+  },
+  detailsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10, // Add margin bottom to separate from mood
   },
 });
 
