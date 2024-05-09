@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
 import Slider from "@react-native-community/slider";
+import { AntDesign } from "@expo/vector-icons";
 
 const MeditationPlayer = ({ route }) => {
   const navigation = useNavigation();
@@ -10,7 +11,7 @@ const MeditationPlayer = ({ route }) => {
   const [sound, setSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [position, setPosition] = useState(0);
-  const [durationMillis, setDurationMillis] = useState(0);
+  const [durationMillis, setDurationMillis] = useState(duration * 1000); // Convert duration to milliseconds
 
   useEffect(() => {
     const loadSound = async () => {
@@ -39,7 +40,11 @@ const MeditationPlayer = ({ route }) => {
     if (status.isPlaying) {
       setIsPlaying(true);
       setPosition(status.positionMillis);
-      setDurationMillis(status.durationMillis);
+      if (status.positionMillis >= durationMillis) {
+        setIsPlaying(false);
+        sound.stopAsync();
+        setPosition(0);
+      }
     } else {
       setIsPlaying(false);
       setPosition(0);
@@ -63,21 +68,32 @@ const MeditationPlayer = ({ route }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  const handleSliderChange = async (value) => {
+    if (sound) {
+      await sound.setPositionAsync(value);
+      setPosition(value);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={backgroundImage} style={styles.image} />
       </View>
-      <Text style={styles.title}>Meditation Session ({duration} Minutes)</Text>
+      <Text style={styles.title}>
+        Meditation Session ({duration / 60} Minutes)
+      </Text>
       <View style={styles.controls}>
         <Slider
           style={styles.slider}
-          value={position}
+          //value={position}
+          minimumValue={0}
           maximumValue={durationMillis}
-          minimumTrackTintColor="#b783e6"
-          maximumTrackTintColor="#CCCCCC"
+          //minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#000000"
           thumbTintColor="#b783e6"
           disabled={!sound}
+          onValueChange={handleSliderChange}
         />
         <View style={styles.timeContainer}>
           <Text>{formatTime(position)}</Text>
@@ -93,7 +109,7 @@ const MeditationPlayer = ({ route }) => {
         onPress={() => navigation.goBack()}
         style={styles.backButton}
       >
-        <Text style={styles.backButtonText}>Back</Text>
+        <AntDesign name="leftcircle" size={30} color="#b783e6" />
       </TouchableOpacity>
     </View>
   );
@@ -131,16 +147,17 @@ const styles = StyleSheet.create({
   },
   controls: {
     alignItems: "center",
+    marginTop: 20,
   },
   slider: {
-    width: "80%",
-    marginTop: 20,
+    width: 300,
+    height: 40,
+    marginBottom: 20,
   },
   timeContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "80%",
-    marginTop: 10,
     marginBottom: 20,
   },
   playButton: {
@@ -159,10 +176,6 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     paddingTop: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
   },
 });
 

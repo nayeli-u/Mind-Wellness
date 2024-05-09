@@ -151,6 +151,7 @@ import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const MoodTrackingScreen = () => {
   const navigation = useNavigation();
@@ -227,7 +228,7 @@ const MoodTrackingScreen = () => {
         onPress={() => navigation.navigate("HomeScreen")}
         style={styles.backButton}
       >
-        <Text style={styles.backButtonText}>Back</Text>
+        <AntDesign name="leftcircle" size={30} color="#b783e6" />
       </TouchableOpacity>
     </View>
   );
@@ -274,10 +275,6 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     paddingTop: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
   },
 });
 

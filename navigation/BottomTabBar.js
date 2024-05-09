@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../app/HomeScreen";
 import AccountSettingsScreen from "../app/AccountSettingsScreen";
+import MoodHistoryScreen from "../app/MoodHistoryScreen"; // Import MoodHistoryScreen
+import GoalListScreen from "../app/GoalListScreen"; // Import GoalListScreen
 import COLORS from "../constants/theme";
 
 const Tab = createBottomTabNavigator();
@@ -33,6 +35,10 @@ const BottomTabBar = () => {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "AccountSetting") {
             iconName = focused ? "settings" : "settings-outline";
+          } else if (route.name === "MoodHistory") {
+            iconName = focused ? "analytics" : "analytics-outline";
+          } else if (route.name === "GoalList") {
+            iconName = focused ? "list" : "list-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -44,6 +50,22 @@ const BottomTabBar = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: "Home",
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="MoodHistory"
+        component={MoodHistoryScreen}
+        options={{
+          tabBarLabel: "Mood History",
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="GoalList"
+        component={GoalListScreen}
+        options={{
+          tabBarLabel: "Goals",
           headerShown: false,
         }}
       />

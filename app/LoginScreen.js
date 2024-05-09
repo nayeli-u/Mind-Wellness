@@ -45,12 +45,19 @@ const LoginScreen = () => {
             fontWeight: "bold",
             marginVertical: 12,
             color: COLORS.black,
+            alignSelf: "center",
           }}
         >
           Login
         </Text>
 
-        <Text style={{ fontSize: 16, color: COLORS.black }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: COLORS.black,
+            alignSelf: "center",
+          }}
+        >
           Start your journey today!
         </Text>
 
@@ -138,10 +145,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#340B67",
     padding: 10,
     borderRadius: 5,
+    alignItems: "center",
   },
   buttonText: {
     color: "#ffffff",
     fontSize: 18,
+  },
+  LogInContainer: {
+    marginTop: 10,
+    alignItems: "center",
+  },
+  LogInText: {
+    color: "#000000",
+  },
+  LogInLink: {
+    textDecorationLine: "underline",
   },
 });
 

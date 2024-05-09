@@ -6,10 +6,10 @@ import SignUpScreen from "./app/SignUpScreen";
 import MoodTrackingScreen from "./app/MoodTrackingScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MoodHistoryScreen from "./app/MoodHistoryScreen";
+//import MoodHistoryScreen from "./app/MoodHistoryScreen";
 //import AccountSettingsScreen from "./app/AccountSettingsScreen";
 import GoalSettingScreen from "./app/GoalSettingScreen";
-import GoalListScreen from "./app/GoalListScreen";
+//import GoalListScreen from "./app/GoalListScreen";
 import Affirmations from "./app/Affirmations";
 import MeditationScreen from "./app/MeditationScreen";
 
@@ -85,11 +85,11 @@ export default function App() {
             component={MoodTrackingScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="MoodHistory"
             component={MoodHistoryScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           {/* <Stack.Screen
             name="AccountSetting"
             component={BottomTabBar}
@@ -100,11 +100,11 @@ export default function App() {
             component={GoalSettingScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="GoalList"
             component={GoalListScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Stack.Screen
             name="Affirmation"
             component={Affirmations}

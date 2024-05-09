@@ -94,12 +94,6 @@ const MoodHistoryScreen = () => {
       ) : (
         <Text>No mood history available</Text>
       )}
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HomeScreen")}
-        style={styles.backButton}
-      >
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
     </View>
   );
 };

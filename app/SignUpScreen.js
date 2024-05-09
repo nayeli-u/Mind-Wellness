@@ -43,13 +43,15 @@ const SignUpScreen = () => {
             fontWeight: "bold",
             marginVertical: 12,
             color: COLORS.black,
-            paddingVertical: 10,
+            alignSelf: "center",
           }}
         >
           Create Account
         </Text>
 
-        <Text style={{ fontSize: 16, color: COLORS.black }}>
+        <Text
+          style={{ fontSize: 16, color: COLORS.black, alignSelf: "center" }}
+        >
           Start your journey today!
         </Text>
 
@@ -117,13 +119,13 @@ const SignUpScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.LogInContainer}>
+        <View style={styles.SignUpContainer}>
           <TouchableOpacity>
-            <Text style={styles.LogInText}>Already have an account?</Text>
+            <Text style={styles.SignUpText}>Already have an account?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.LogInLink}>Log in</Text>
+            <Text style={styles.SignUpLink}>Log in</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -136,23 +138,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#340B67",
     padding: 10,
     borderRadius: 5,
+    alignItems: "center",
   },
   buttonText: {
     color: "#ffffff",
     fontSize: 18,
   },
-  LogInContainer: {
-    flexDirection: "row",
+  SignUpContainer: {
     marginTop: 10,
+    alignItems: "center",
   },
-  LogInText: {
+  SignUpText: {
     color: "#000000",
-    fontSize: 12,
   },
-  LogInLink: {
-    color: "#4285f4",
-    fontSize: 12,
-    fontWeight: "bold",
+  SignUpLink: {
+    textDecorationLine: "underline",
   },
 });
 

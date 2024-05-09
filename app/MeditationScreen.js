@@ -7,6 +7,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const MeditationScreen = () => {
   const navigation = useNavigation();
@@ -21,19 +22,19 @@ const MeditationScreen = () => {
 
   const meditationSessions = [
     {
-      duration: 5,
-      soundFile: require("../assets/heavy-rain-nature-sounds-8186.mp3"),
+      duration: 300, // 5 minutes in seconds
+      soundFile: require("../assets/relaxing-mountains-rivers-streams-running-water-18178.mp3"),
       label: "Meditation Session 1",
       backgroundImage: require("../assets/balance-3356547_1280.jpg"),
     },
     {
-      duration: 10,
-      soundFile: require("../assets/birds-singing-calm-river-nature-ambient-sound-127411.mp3"),
+      duration: 600, // 10 minutes in seconds
+      soundFile: require("../assets/meditation-and-gentle-nature-184572.mp3"),
       label: "Meditation Session 2",
       backgroundImage: require("../assets/pngtree-lakescape-landscape-nature-scenery-hd-image_2950137.jpg"),
     },
     {
-      duration: 15,
+      duration: 900, // 15 minutes in seconds
       soundFile: require("../assets/moments-of-forgetfulness-186426.mp3"),
       label: "Meditation Session 3",
       backgroundImage: require("../assets/digital-painting-castle-lake-with-sunset-background_467123-21172.jpg.avif"),
@@ -61,15 +62,17 @@ const MeditationScreen = () => {
             imageStyle={styles.image}
           >
             <Text style={styles.buttonText}>{session.label}</Text>
-            <Text style={styles.durationText}>{session.duration} Minutes</Text>
+            <Text style={styles.durationText}>
+              {session.duration / 60} Minutes
+            </Text>
           </ImageBackground>
         </TouchableOpacity>
       ))}
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate("HomeScreen")}
         style={styles.backButton}
       >
-        <Text style={styles.backButtonText}>Back</Text>
+        <AntDesign name="leftcircle" size={30} color="#b783e6" />
       </TouchableOpacity>
     </View>
   );
@@ -116,14 +119,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   backButton: {
+    flexDirection: "row",
+    alignItems: "center",
     position: "absolute",
     top: 20,
     left: 20,
     paddingTop: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#b783e6",
   },
 });
 

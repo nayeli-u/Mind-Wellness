@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const Affirmations = () => {
   const navigation = useNavigation();
@@ -101,7 +102,7 @@ const Affirmations = () => {
         onPress={() => navigation.navigate("HomeScreen")}
         style={styles.backButton}
       >
-        <Text style={styles.backButtonText}>Back</Text>
+        <AntDesign name="leftcircle" size={30} color="#b783e6" />
       </TouchableOpacity>
     </View>
   );
@@ -110,7 +111,7 @@ const Affirmations = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b783e6",
+    backgroundColor: "#C3B1E1",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
@@ -139,10 +140,6 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     paddingTop: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#fff",
   },
 });
 

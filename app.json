@@ -1,8 +1,8 @@
 {
   "expo": {
     "scheme": "mind",
-    "name": "MindWellness",
-    "slug": "MindWellness",
+    "name": "Mind Wellness App",
+    "slug": "mind-wellness",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,13 +16,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nayeliumana.mindwellness"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.nayeliumana.mindwellness"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +32,14 @@
     "plugins": [
       "expo-router",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1717f23d-c33b-45cb-9945-22478c846edd"
+      }
+    }
   }
 }
