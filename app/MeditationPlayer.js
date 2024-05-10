@@ -21,7 +21,7 @@ const MeditationPlayer = ({ route }) => {
         });
         setSound(sound);
         sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-        console.log("Sound loaded successfully.");
+        //console.log("Sound loaded successfully.");
       } catch (error) {
         console.error("Error loading sound:", error);
       }
@@ -68,12 +68,12 @@ const MeditationPlayer = ({ route }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  const handleSliderChange = async (value) => {
+  /* const handleSliderChange = async (value) => {
     if (sound) {
       await sound.setPositionAsync(value);
       setPosition(value);
     }
-  };
+  }; */
 
   return (
     <View style={styles.container}>
@@ -93,7 +93,7 @@ const MeditationPlayer = ({ route }) => {
           maximumTrackTintColor="#000000"
           thumbTintColor="#b783e6"
           disabled={!sound}
-          onValueChange={handleSliderChange}
+          /* onValueChange={handleSliderChange} */
         />
         <View style={styles.timeContainer}>
           <Text>{formatTime(position)}</Text>
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     color: "#b783e6",
     position: "absolute",
     paddingTop: 50,
-    top: 150,
+    top: 100,
   },
   controls: {
     alignItems: "center",

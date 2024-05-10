@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    //marginBottom: 10,
     color: "#b783e6",
   },
   button: {
@@ -119,12 +119,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   backButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    //lexDirection: "row",
+    //alignItems: "center",
     position: "absolute",
     top: 20,
     left: 20,
-    paddingTop: 20,
+    paddingTop: 10,
   },
 });
 

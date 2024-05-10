@@ -8,7 +8,7 @@ const LandingPageScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Mind Wellness</Text>
       <Image
-        source={require("/Users/nayeli/Desktop/ReactNativeProject/MindWellness/assets/brain.png")}
+        source={require("/Users/nayeli/ReactNativeProject/MindWellness/assets/brain.png")}
         style={styles.brain}
       />
       <TouchableOpacity

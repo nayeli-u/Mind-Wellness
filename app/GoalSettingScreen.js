@@ -74,7 +74,7 @@ const GoalSettingScreen = () => {
         <Text style={styles.buttonText}>Save Goal</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("HomeScreen")}
+        onPress={() => navigation.navigate("Home")}
         style={styles.backButton}
       >
         <AntDesign name="leftcircle" size={30} color="#b783e6" />

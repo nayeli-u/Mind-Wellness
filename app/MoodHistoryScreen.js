@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingTop: 30,
   },
   title: {
     fontSize: 24,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#b783e6",
   },
-  moodList: {
+  /*  moodList: {
     flexGrow: 1,
     justifyContent: "center",
-  },
+  }, */
   moodItem: {
     padding: 20,
     marginVertical: 10,
